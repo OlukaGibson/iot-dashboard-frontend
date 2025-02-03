@@ -1,0 +1,17 @@
+.my-masonry-grid {
+  display: flex;
+  margin-left: -80px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 100px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* add a border and padding to create the ring effect */
+.tile-border {
+  border: 2px solid rgba(255, 255, 255, 0.8); /* white border with some opacity */
+  padding: 10px; /* space between border and content */
+  border-radius: 10px; /* rounded corners */
+  overflow: hidden; /* ensure the content does not overflow */
+}

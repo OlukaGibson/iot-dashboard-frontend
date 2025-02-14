@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
@@ -9,13 +9,25 @@ const AddDeviceForm = () => {
   const [writekey, setWritekey] = useState('');
   const [deviceID, setDeviceID] = useState('');
   const [currentFirmwareVersion, setCurrentFirmwareVersion] = useState('');
-  const [previousFirmwareVersion, setPreviousFirmwareVersion] = useState('');
-  const [targetFirmwareVersion, setTargetFirmwareVersion] = useState('');
-  const [fileDownloadState, setFileDownloadState] = useState(false);
   const [fields, setFields] = useState(Array(20).fill(''));
   const [fieldMarks, setFieldMarks] = useState(Array(20).fill(false));
   const [visibleFields, setVisibleFields] = useState(2);
+  const [firmwareOptions, setFirmwareOptions] = useState([]);
+  const [showFirmwareFields, setShowFirmwareFields] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchFirmwareOptions = async () => {
+      try {
+        const response = await axios.get(`${config.baseURL}/firmware/display`);
+        setFirmwareOptions(response.data);
+      } catch (error) {
+        console.error('Error fetching firmware options:', error);
+      }
+    };
+
+    fetchFirmwareOptions();
+  }, []);
 
   const handleFieldChange = (index, value) => {
     const newFields = [...fields];
@@ -43,9 +55,6 @@ const AddDeviceForm = () => {
     formData.append('writekey', writekey);
     formData.append('deviceID', deviceID);
     formData.append('currentFirmwareVersion', currentFirmwareVersion);
-    formData.append('previousFirmwareVersion', previousFirmwareVersion);
-    formData.append('targetFirmwareVersion', targetFirmwareVersion);
-    formData.append('fileDownloadState', fileDownloadState);
 
     fields.forEach((field, index) => {
       formData.append(`field${index + 1}`, field);
@@ -115,42 +124,31 @@ const AddDeviceForm = () => {
               required
             />
           </div>
-          <div className="mb-4 flex items-center">
-            <label className="block text-gray-700 w-1/4">Current Firmware Version</label>
-            <input
-              type="text"
-              value={currentFirmwareVersion}
-              onChange={(e) => setCurrentFirmwareVersion(e.target.value)}
-              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
-            />
-          </div>
-          <div className="mb-4 flex items-center">
-            <label className="block text-gray-700 w-1/4">Previous Firmware Version</label>
-            <input
-              type="text"
-              value={previousFirmwareVersion}
-              onChange={(e) => setPreviousFirmwareVersion(e.target.value)}
-              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
-            />
-          </div>
-          <div className="mb-4 flex items-center">
-            <label className="block text-gray-700 w-1/4">Target Firmware Version</label>
-            <input
-              type="text"
-              value={targetFirmwareVersion}
-              onChange={(e) => setTargetFirmwareVersion(e.target.value)}
-              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
-            />
-          </div>
-          <div className="mb-4 flex items-center">
-            <label className="block text-gray-700 w-1/4">File Download State</label>
-            <input
-              type="checkbox"
-              checked={fileDownloadState}
-              onChange={(e) => setFileDownloadState(e.target.checked)}
-              className="mt-1 block"
-            />
-          </div>
+          {!showFirmwareFields && (
+            <button type="button" onClick={() => setShowFirmwareFields(true)} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+              + Add Firmware Versions
+            </button>
+          )}
+          {showFirmwareFields && (
+            <>
+              <div className="mb-4 flex items-center">
+                <label className="block text-gray-700 w-1/4">Current Firmware Version</label>
+                <select
+                  value={currentFirmwareVersion}
+                  onChange={(e) => setCurrentFirmwareVersion(e.target.value)}
+                  className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+                >
+                  <option value="">Select Firmware</option>
+                  {firmwareOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.firmwareVersion}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+            </>
+          )}
           {fields.slice(0, visibleFields).map((field, index) => (
             <div className="mb-4 flex items-center" key={index}>
               <label className="block text-gray-700 w-1/4">{`Field ${index + 1}`}</label>

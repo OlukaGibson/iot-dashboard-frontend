@@ -4,17 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 
 const AddFirmwareForm = () => {
-  const [file, setFile] = useState(null);
+  const [firmwareFile, setFirmwareFile] = useState(null);
+  const [bootloaderFile, setBootloaderFile] = useState(null);
   const [firmwareVersion, setFirmwareVersion] = useState('');
   const [description, setDescription] = useState('');
-  const [documentation, setDocumentation] = useState('');
-  const [documentationLink, setDocumentationLink] = useState('');
+  // const [documentation, setDocumentation] = useState('');
+  // const [documentationLink, setDocumentationLink] = useState('');
   const [changes, setChanges] = useState(Array(10).fill(''));
   const [visibleChanges, setVisibleChanges] = useState(1);
   const navigate = useNavigate();
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleFirmwareFileChange = (e) => {
+    setFirmwareFile(e.target.files[0]);
+  };
+
+  const handleBootloaderFileChange = (e) => {
+    setBootloaderFile(e.target.files[0]);
   };
 
   const handleChange = (index, value) => {
@@ -26,11 +31,14 @@ const AddFirmwareForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('firmware', firmwareFile);
+    if (bootloaderFile) {
+      formData.append('firmware_bootloader', bootloaderFile);
+    }
     formData.append('firmwareVersion', firmwareVersion);
     formData.append('description', description);
-    formData.append('documentation', documentation);
-    formData.append('documentationLink', documentationLink);
+    // formData.append('documentation', documentation);
+    // formData.append('documentationLink', documentationLink);
     changes.forEach((change, index) => {
       formData.append(`change${index + 1}`, change);
     });
@@ -65,9 +73,17 @@ const AddFirmwareForm = () => {
             <label className="block text-gray-700 w-1/4">Firmware File</label>
             <input
               type="file"
-              onChange={handleFileChange}
+              onChange={handleFirmwareFileChange}
               className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
               required
+            />
+          </div>
+          <div className="mb-4 flex items-center">
+            <label className="block text-gray-700 w-1/4">Bootloader File (Optional)</label>
+            <input
+              type="file"
+              onChange={handleBootloaderFileChange}
+              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
             />
           </div>
           <div className="mb-4 flex items-center">
@@ -89,7 +105,7 @@ const AddFirmwareForm = () => {
               required
             />
           </div>
-          <div className="mb-4 flex items-center">
+          {/* <div className="mb-4 flex items-center">
             <label className="block text-gray-700 w-1/4">Documentation</label>
             <textarea
               value={documentation}
@@ -105,7 +121,7 @@ const AddFirmwareForm = () => {
               onChange={(e) => setDocumentationLink(e.target.value)}
               className="mt-1 block w-1/2 p-2 text-lg rounded-lg"
             />
-          </div>
+          </div> */}
           {changes.slice(0, visibleChanges).map((change, index) => (
             <div className="mb-4 flex items-center" key={index}>
               <label className="block text-gray-700 w-1/4">{`Change ${index + 1}`}</label>

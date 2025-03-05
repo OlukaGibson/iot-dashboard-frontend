@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Intropage from "../Intropage";
 import Footer from "../Footer";
-import BrandDisplay from "../BrandDisplay";
 import RegisterForm from "../RegisterForm";
 import Background from "./background.png";
 import Navbar from "../Navbar";

@@ -32,8 +32,8 @@ const FirmwareDetail = () => {
       });
   }, [baseURL, firmwareVersion]);
 
-  const handleDownload = () => {
-    const downloadUrl = `${baseURL}/firmware/${firmwareVersion}/download`;
+  const handleDownload = (type) => {
+    const downloadUrl = `${baseURL}/firmware/${firmwareVersion}/download/${type}`;
     window.location.href = downloadUrl;
   };
 
@@ -59,18 +59,31 @@ const FirmwareDetail = () => {
                 <div>
                   <p><strong>Firmware Version:</strong> {firmware.firmwareVersion}</p>
                   <p><strong>Description:</strong> {firmware.description}</p>
-                  <p><strong>Documentation:</strong> {firmware.documentation}</p>
-                  <p><strong>Documentation Link:</strong> {firmware.documentationLink}</p>
                   <p><strong>Created At:</strong> {new Date(firmware.created_at).toLocaleString()}</p>
+                  <p><strong>Updated At:</strong> {new Date(firmware.updated_at).toLocaleString()}</p>
                   <div>
                     <strong>Changes:</strong>
                     {Object.values(firmware.changes).filter(change => change).map((change, i) => (
                       <div key={i}>{change}</div>
                     ))}
                   </div>
-                  <button onClick={handleDownload} className="bg-green-500 text-white px-4 py-2 rounded mt-4">
-                    Download Firmware
-                  </button>
+                  <div className="mt-4">
+                    {firmware.firmware_string_hex && (
+                      <button onClick={() => handleDownload('firwmwarehex')} className="bg-green-500 text-white px-4 py-2 rounded mr-2">
+                        Download Hex
+                      </button>
+                    )}
+                    {firmware.firmware_string && (
+                      <button onClick={() => handleDownload('firwmwarebin')} className="bg-green-500 text-white px-4 py-2 rounded mr-2">
+                        Download Bin
+                      </button>
+                    )}
+                    {firmware.firmware_string_bootloader && (
+                      <button onClick={() => handleDownload('firwmwarebootloader')} className="bg-green-500 text-white px-4 py-2 rounded">
+                        Download Bootloader
+                      </button>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <p>Firmware not found</p>

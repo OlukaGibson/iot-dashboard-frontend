@@ -36,7 +36,7 @@ const FirmwareList = () => {
   };
 
   const handleDownload = (firmwareVersion) => {
-    const downloadUrl = `${baseURL}/firmware/${firmwareVersion}/download`;
+    const downloadUrl = `${baseURL}/firmware/${firmwareVersion}/download/firwmwarehex`;
     window.location.href = downloadUrl;
   };
 

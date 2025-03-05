@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NEW_PRODUCTS_INTRO, WELCOME_MESSAGE } from "../constants";
+import { WELCOME_MESSAGE } from "../constants";
 
 import logo from "../assets/gperfect.png";
 import { BiSearch } from "react-icons/bi";

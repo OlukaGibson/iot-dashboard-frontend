@@ -71,7 +71,7 @@ const FirmwareList = () => {
               <tr key={index}>
                 <td className="border px-4 py-2">
                   <a href={`/firmware/${item.firmwareVersion}`} className="text-blue-500 hover:underline">
-                    {item.firmwareVersion}
+                    {item.firmwareVersion} 
                   </a>
                 </td>
                 <td className="border px-4 py-2">{item.description}</td>

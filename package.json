@@ -1,6 +1,6 @@
 {
-  "name": "stevo",
-  "private": true,
+  "name": "iotdashboard",
+  "private": true,  
   "version": "0.0.0",
   "type": "module",
   "scripts": {

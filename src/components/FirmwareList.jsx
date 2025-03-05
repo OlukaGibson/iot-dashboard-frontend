@@ -40,14 +40,6 @@ const FirmwareList = () => {
     window.location.href = downloadUrl;
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
   return (
     <div className="container mx-auto p-4 h-screen flex flex-col">
       <div className="mb-4">
@@ -55,17 +47,23 @@ const FirmwareList = () => {
           Add New Firmware
         </button>
       </div>
-      {firmware.length > 0 ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : firmware.length > 0 ? (
         <table className="table-auto w-full">
           <thead>
             <tr>
               <th className="px-4 py-2">Firmware Version</th>
               <th className="px-4 py-2">Description</th>
-              <th className="px-4 py-2">Documentation</th>
-              <th className="px-4 py-2">Documentation Link</th>
+              {/* <th className="px-4 py-2">Firmware bin</th> */}
+              {/* <th className="px-4 py-2">Bootloader hex</th> */}
+              {/* <th className="px-4 py-2">Firmware hex</th> */}
               <th className="px-4 py-2">Changes</th>
               <th className="px-4 py-2">Created At</th>
-              <th className="px-4 py-2">Actions</th>
+              {/* <th className="px-4 py-2">Updated</th> */}
+              <th className="px-4 py-2">Hex file</th>
             </tr>
           </thead>
           <tbody>
@@ -77,14 +75,16 @@ const FirmwareList = () => {
                   </a>
                 </td>
                 <td className="border px-4 py-2">{item.description}</td>
-                <td className="border px-4 py-2">{item.documentation}</td>
-                <td className="border px-4 py-2">{item.documentationLink}</td>
+                {/* <td className="border px-4 py-2">{item.firmware_string || "N/A"}</td>
+                <td className="border px-4 py-2">{item.firmware_string_bootloader || "N/A"}</td>
+                <td className="border px-4 py-2">{item.firmware_string_hex || "N/A"}</td> */}
                 <td className="border px-4 py-2">
                   {Object.values(item.changes).filter(change => change).map((change, i) => (
                     <div key={i}> 👉🏾 {change}</div>
                   ))}
                 </td>
                 <td className="border px-4 py-2">{new Date(item.created_at).toLocaleString()}</td>
+                {/* <td className="border px-4 py-2">{new Date(item.updated_at).toLocaleString()}</td> */}
                 <td className="border px-4 py-2">
                   <button onClick={() => handleDownload(item.firmwareVersion)} className="bg-green-500 text-white px-4 py-2 rounded">
                     Download

@@ -31,14 +31,6 @@ const DeviceList = () => {
       });
   }, [baseURL]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
   return (
     <div className="container mx-auto p-4 h-screen flex flex-col">
       <div className="mb-4">
@@ -46,7 +38,11 @@ const DeviceList = () => {
           Add New Device
         </button>
       </div>
-      {devices.length > 0 ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : devices.length > 0 ? (
         <table className="table-auto w-full">
           <thead>
             <tr>

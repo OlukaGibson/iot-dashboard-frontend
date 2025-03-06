@@ -54,9 +54,9 @@ const DeviceList = () => {
               <th className="px-4 py-2">Previous Firmware Version</th>
               <th className="px-4 py-2">Target Firmware Version</th>
               <th className="px-4 py-2">File Download State</th>
-              <th className="px-4 py-2">Created At</th>
+              {/* <th className="px-4 py-2">Created At</th>
               <th className="px-4 py-2">Fields</th>
-              <th className="px-4 py-2">Field Marks</th>
+              <th className="px-4 py-2">Field Marks</th> */}
             </tr>
           </thead>
           <tbody>
@@ -69,8 +69,8 @@ const DeviceList = () => {
                 <td className="border px-4 py-2">{device.currentFirmwareVersion}</td>
                 <td className="border px-4 py-2">{device.previousFirmwareVersion}</td>
                 <td className="border px-4 py-2">{device.targetFirmwareVersion}</td>
-                <td className="border px-4 py-2">{device.fileDownloadState ? "True" : "False"}</td>
-                <td className="border px-4 py-2">{new Date(device.created_at).toLocaleString()}</td>
+                <td className="border px-4 py-2">{device.fileDownloadState ? "✔️" : "❌"}</td>
+                {/* <td className="border px-4 py-2">{new Date(device.created_at).toLocaleString()}</td>
                 <td className="border px-4 py-2">
                   {Object.values(device.fields).filter(field => field).map((field, i) => (
                     <div key={i}>{field}</div>
@@ -80,7 +80,7 @@ const DeviceList = () => {
                   {Object.values(device.field_marks).filter(mark => mark).map((mark, i) => (
                     <div key={i}>{mark ? "✔️" : "❌"}</div>
                   ))}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

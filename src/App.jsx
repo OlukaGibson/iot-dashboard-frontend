@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/add-firmware" element={<AddFirmware />} />
         <Route path="/firmware/:firmwareVersion" element={<FirmwareDetail />} />
         <Route path="/add-device" element={<AddDevice />} />
-        <Route path="/devices/:deviceId" element={<DeviceDetail />} />
+        <Route path="/devices/:deviceID" element={<DeviceDetail />} />
 
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />

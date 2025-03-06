@@ -35,7 +35,8 @@ const FirmwareList = () => {
     navigate("/add-firmware");
   };
 
-  const handleDownload = (firmwareVersion) => {
+  const handleDownload = (e, firmwareVersion) => {
+    e.stopPropagation(); 
     const downloadUrl = `${baseURL}/firmware/${firmwareVersion}/download/firwmwarehex`;
     window.location.href = downloadUrl;
   };
@@ -57,36 +58,26 @@ const FirmwareList = () => {
             <tr>
               <th className="px-4 py-2">Firmware Version</th>
               <th className="px-4 py-2">Description</th>
-              {/* <th className="px-4 py-2">Firmware bin</th> */}
-              {/* <th className="px-4 py-2">Bootloader hex</th> */}
-              {/* <th className="px-4 py-2">Firmware hex</th> */}
               <th className="px-4 py-2">Changes</th>
               <th className="px-4 py-2">Created At</th>
-              {/* <th className="px-4 py-2">Updated</th> */}
               <th className="px-4 py-2">Hex file</th>
             </tr>
           </thead>
           <tbody>
             {firmware.map((item, index) => (
-              <tr key={index}>
+              <tr key={index} onClick={() => navigate(`/firmware/${item.firmwareVersion}`)} className="cursor-pointer">
                 <td className="border px-4 py-2">
-                  <a href={`/firmware/${item.firmwareVersion}`} className="text-blue-500 hover:underline">
-                    {item.firmwareVersion} 
-                  </a>
+                  {item.firmwareVersion}
                 </td>
                 <td className="border px-4 py-2">{item.description}</td>
-                {/* <td className="border px-4 py-2">{item.firmware_string || "N/A"}</td>
-                <td className="border px-4 py-2">{item.firmware_string_bootloader || "N/A"}</td>
-                <td className="border px-4 py-2">{item.firmware_string_hex || "N/A"}</td> */}
                 <td className="border px-4 py-2">
                   {Object.values(item.changes).filter(change => change).map((change, i) => (
                     <div key={i}> 👉🏾 {change}</div>
                   ))}
                 </td>
                 <td className="border px-4 py-2">{new Date(item.created_at).toLocaleString()}</td>
-                {/* <td className="border px-4 py-2">{new Date(item.updated_at).toLocaleString()}</td> */}
                 <td className="border px-4 py-2">
-                  <button onClick={() => handleDownload(item.firmwareVersion)} className="bg-green-500 text-white px-4 py-2 rounded">
+                  <button onClick={(e) => handleDownload(e, item.firmwareVersion)} className="bg-green-500 text-white px-4 py-2 rounded">
                     Download
                   </button>
                 </td>

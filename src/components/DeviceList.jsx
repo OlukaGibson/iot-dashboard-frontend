@@ -65,7 +65,7 @@ const DeviceList = () => {
           </thead>
           <tbody>
             {devices.map((device, index) => (
-              <tr key={index}>
+              <tr key={index} onClick={() => navigate(`/devices/${device.deviceID}`)} className="cursor-pointer">
                 <td className="border px-4 py-2">{device.name}</td>
                 <td className="border px-4 py-2">{device.readkey}</td>
                 <td className="border px-4 py-2">{device.writekey}</td>

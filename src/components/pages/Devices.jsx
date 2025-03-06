@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Intropage from "../Intropage";
 import Footer from "../Footer";
 import Navbar from "../Navbar";
 import DeviceList from "../DeviceList";

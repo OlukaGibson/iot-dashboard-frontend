@@ -10,6 +10,7 @@ import AddDevice from './components/pages/AddDevice';
 import FirmwareDetail from './components/FirmwareDetail';
 import DeviceDetail from './components/DeviceDetail';
 
+
 const App = () => {
   return (
     <Router>

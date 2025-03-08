@@ -9,6 +9,9 @@ import AddFirmware from './components/pages/AddFirmware';
 import AddDevice from './components/pages/AddDevice';
 import FirmwareDetail from './components/FirmwareDetail';
 import DeviceDetail from './components/DeviceDetail';
+import AddDeviceProfile from './components/pages/AddDeviceProfile';
+import DeviceProfile from './components/pages/DeviceProfile';
+import DeviceProfileDetail from './components/DeviceProfileDetail';
 
 
 const App = () => {
@@ -22,6 +25,9 @@ const App = () => {
         <Route path="/firmware/:firmwareVersion" element={<FirmwareDetail />} />
         <Route path="/add-device" element={<AddDevice />} />
         <Route path="/devices/:deviceID" element={<DeviceDetail />} />
+        <Route path="/add-device-profile" element={<AddDeviceProfile />} />
+        <Route path="/device-profiles" element={<DeviceProfile />} />
+        <Route path="/device-profiles/:deviceProfileID" element={<DeviceProfileDetail />} />
 
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />

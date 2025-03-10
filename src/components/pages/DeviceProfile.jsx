@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../Footer";
 import Navbar from "../Navbar";
-import DeviceList from "../DeviceList";
+import DeviceProfileList from "../DeviceProfileList";
 
 const DeviceProfile = () => {
   return (
@@ -13,7 +13,7 @@ const DeviceProfile = () => {
         </div>
         <div className="pt-20"></div>
         <div className="pt-20">
-            <DeviceList />
+            <DeviceProfileList />
         </div>
         <Footer />
       </div>

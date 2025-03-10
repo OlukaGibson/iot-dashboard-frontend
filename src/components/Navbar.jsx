@@ -34,6 +34,11 @@ const Navbar = () => {
                   <Link to="/firmware">Firmware</Link>
                 </a>
               </li>
+              <li className="text-gray-100">
+                <a href="" className="p-1 text-gray-100">
+                  <Link to="/device-profiles">Profiles</Link>
+                </a>
+              </li>
             </ul>
           </div>
           <div className="md:hidden">
@@ -52,12 +57,17 @@ const Navbar = () => {
               </li>
               <li className="text-gray-100">
                 <a href="" className="p-1 text-gray-100">
-                  <Link to="/computers">Devices</Link>
+                  <Link to="/devices">Devices</Link>
                 </a>
               </li>
               <li className="text-gray-100">
                 <a href="" className="p-1 text-gray-100">
-                  <Link to="/">Firmware</Link>
+                  <Link to="/firmware">Firmware</Link>
+                </a>
+              </li>
+              <li className="text-gray-100">
+                <a href="" className="p-1 text-gray-100">
+                  <Link to="/device-profiles">Profiles</Link>
                 </a>
               </li>
             </ul>

@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "../Footer";
-import AddDeviceForm from "./AddDeviceForm";
+import AddDeviceProfileForm from "./AddDeviceProfileForm";
 import Navbar from "../Navbar";
 
 const AddDeviceProfile = () => {
@@ -12,7 +12,7 @@ const AddDeviceProfile = () => {
         </div>
         <div className="pt-20"></div>
         <div className="pt-20">
-          <AddDeviceForm />
+          <AddDeviceProfileForm />
         </div>
         <Footer />
       </div>

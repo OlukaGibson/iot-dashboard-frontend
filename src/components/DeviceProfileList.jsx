@@ -4,15 +4,15 @@ import "./style.css";
 import config from "../config";
 
 const DeviceProfileList = () => {
-  const [devices, setDevices] = useState([]);
+  const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const baseURL = config.baseURL;
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Fetching devices from:", `${baseURL}/get_devices`);
-    fetch(`${baseURL}/get_devices`)
+    console.log("Fetching profiles from:", `${baseURL}/get_profiles`);
+    fetch(`${baseURL}/get_profiles`)
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -20,12 +20,12 @@ const DeviceProfileList = () => {
         return response.json();
       })
       .then(data => {
-        console.log("Devices data:", data);
-        setDevices(data);
+        console.log("Profiles data:", data);
+        setProfiles(data);
         setLoading(false);
       })
       .catch(error => {
-        console.error("Error fetching devices:", error);
+        console.error("Error fetching profiles:", error);
         setError(error.message);
         setLoading(false);
       });
@@ -34,50 +34,38 @@ const DeviceProfileList = () => {
   return (
     <div className="container mx-auto p-4 h-screen flex flex-col">
       <div className="mb-4">
-        <button onClick={() => navigate("/add-device")} className="bg-blue-500 text-white px-4 py-2 rounded">
-          Add New Device
+        <button onClick={() => navigate("/add-device-profile")} className="bg-blue-500 text-white px-4 py-2 rounded">
+          Add New Profile
         </button>
       </div>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>Error: {error}</p>
-      ) : devices.length > 0 ? (
+      ) : profiles.length > 0 ? (
         <table className="table-auto w-full">
           <thead>
             <tr>
               <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Read Key</th>
-              <th className="px-4 py-2">Write Key</th>
-              <th className="px-4 py-2">Device ID</th>
-              <th className="px-4 py-2">Current Firmware Version</th>
-              <th className="px-4 py-2">Previous Firmware Version</th>
-              <th className="px-4 py-2">Target Firmware Version</th>
-              <th className="px-4 py-2">File Download State</th>
-              {/* <th className="px-4 py-2">Created At</th>
+              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2">Created At</th>
               <th className="px-4 py-2">Fields</th>
-              <th className="px-4 py-2">Field Marks</th> */}
+              {/* <th className="px-4 py-2">Field Marks</th> */}
             </tr>
           </thead>
           <tbody>
-            {devices.map((device, index) => (
-              <tr key={index} onClick={() => navigate(`/devices/${device.deviceID}`)} className="cursor-pointer">
-                <td className="border px-4 py-2">{device.name}</td>
-                <td className="border px-4 py-2">{device.readkey}</td>
-                <td className="border px-4 py-2">{device.writekey}</td>
-                <td className="border px-4 py-2">{device.deviceID}</td>
-                <td className="border px-4 py-2">{device.currentFirmwareVersion}</td>
-                <td className="border px-4 py-2">{device.previousFirmwareVersion}</td>
-                <td className="border px-4 py-2">{device.targetFirmwareVersion}</td>
-                <td className="border px-4 py-2">{device.fileDownloadState ? "✔️" : "❌"}</td>
-                {/* <td className="border px-4 py-2">{new Date(device.created_at).toLocaleString()}</td>
+            {profiles.map((profile, index) => (
+              <tr key={index} onClick={() => navigate(`/device-profiles/${profile.id}`)} className="cursor-pointer">
+                <td className="border px-4 py-2">{profile.name}</td>
+                <td className="border px-4 py-2">{profile.description}</td>
+                <td className="border px-4 py-2">{new Date(profile.created_at).toLocaleString()}</td>
                 <td className="border px-4 py-2">
-                  {Object.values(device.fields).filter(field => field).map((field, i) => (
+                  {Object.values(profile.fields).filter(field => field).map((field, i) => (
                     <div key={i}>{field}</div>
                   ))}
                 </td>
-                <td className="border px-4 py-2">
-                  {Object.values(device.field_marks).filter(mark => mark).map((mark, i) => (
+                {/* <td className="border px-4 py-2">
+                  {Object.values(profiles.field_marks).filter(mark => mark).map((mark, i) => (
                     <div key={i}>{mark ? "✔️" : "❌"}</div>
                   ))}
                 </td> */}
@@ -86,7 +74,7 @@ const DeviceProfileList = () => {
           </tbody>
         </table>
       ) : (
-        <p>No devices currently</p>
+        <p>No profiles currently</p>
       )}
     </div>
   );

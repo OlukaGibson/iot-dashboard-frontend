@@ -8,12 +8,13 @@ const AddDeviceForm = () => {
   const [readkey, setReadkey] = useState('');
   const [writekey, setWritekey] = useState('');
   const [deviceID, setDeviceID] = useState('');
+  const [imsi, setImsi] = useState('');
+  const [imei, setImei] = useState('');
+  const [profile, setProfile] = useState('');
   const [currentFirmwareVersion, setCurrentFirmwareVersion] = useState('');
-  const [fields, setFields] = useState(Array(20).fill(''));
-  const [fieldMarks, setFieldMarks] = useState(Array(20).fill(false));
-  const [visibleFields, setVisibleFields] = useState(2);
   const [firmwareOptions, setFirmwareOptions] = useState([]);
   const [showFirmwareFields, setShowFirmwareFields] = useState(false);
+  const [profileOptions, setProfileOptions] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,26 +27,18 @@ const AddDeviceForm = () => {
       }
     };
 
+    const fetchProfileOptions = async () => {
+      try {
+        const response = await axios.get(`${config.baseURL}/get_profiles`);
+        setProfileOptions(response.data);
+      } catch (error) {
+        console.error('Error fetching profile options:', error);
+      }
+    };
+
     fetchFirmwareOptions();
+    fetchProfileOptions();
   }, []);
-
-  const handleFieldChange = (index, value) => {
-    const newFields = [...fields];
-    newFields[index] = value;
-    setFields(newFields);
-  };
-
-  const handleFieldMarkChange = (index, value) => {
-    const newFieldMarks = [...fieldMarks];
-    newFieldMarks[index] = value;
-    setFieldMarks(newFieldMarks);
-  };
-
-  const handleAddField = () => {
-    if (visibleFields < 20) {
-      setVisibleFields(visibleFields + 1);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,15 +47,10 @@ const AddDeviceForm = () => {
     formData.append('readkey', readkey);
     formData.append('writekey', writekey);
     formData.append('deviceID', deviceID);
+    formData.append('imsi', imsi);
+    formData.append('imei', imei);
+    formData.append('profile', profile);
     formData.append('currentFirmwareVersion', currentFirmwareVersion);
-
-    fields.forEach((field, index) => {
-      formData.append(`field${index + 1}`, field);
-    });
-
-    fieldMarks.forEach((mark, index) => {
-      formData.append(`field${index + 1}_mark`, mark);
-    });
 
     try {
       const response = await axios.post(`${config.baseURL}/adddevice`, formData, {
@@ -124,6 +112,26 @@ const AddDeviceForm = () => {
               required
             />
           </div>
+          <div className="mb-4 flex items-center">
+            <label className="block text-gray-700 w-1/4">IMSI</label>
+            <input
+              type="text"
+              value={imsi}
+              onChange={(e) => setImsi(e.target.value)}
+              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+              required
+            />
+          </div>
+          <div className="mb-4 flex items-center">
+            <label className="block text-gray-700 w-1/4">IMEI</label>
+            <input
+              type="text"
+              value={imei}
+              onChange={(e) => setImei(e.target.value)}
+              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+              required
+            />
+          </div>
           {!showFirmwareFields && (
             <button type="button" onClick={() => setShowFirmwareFields(true)} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
               + Add Firmware Versions
@@ -146,32 +154,23 @@ const AddDeviceForm = () => {
                   ))}
                 </select>
               </div>
-              
             </>
           )}
-          {fields.slice(0, visibleFields).map((field, index) => (
-            <div className="mb-4 flex items-center" key={index}>
-              <label className="block text-gray-700 w-1/4">{`Field ${index + 1}`}</label>
-              <input
-                type="text"
-                value={field}
-                onChange={(e) => handleFieldChange(index, e.target.value)}
-                className="mt-1 block w-1/2 p-2 text-lg rounded-lg"
-              />
-              <label className="block text-gray-700 w-1/4">{`Field ${index + 1} Mark`}</label>
-              <input
-                type="checkbox"
-                checked={fieldMarks[index]}
-                onChange={(e) => handleFieldMarkChange(index, e.target.checked)}
-                className="mt-1 block"
-              />
-            </div>
-          ))}
-          {visibleFields < 20 && (
-            <button type="button" onClick={handleAddField} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
-              + Add Field
-            </button>
-          )}
+          <div className="mb-4 flex items-center">
+            <label className="block text-gray-700 w-1/4">Profile</label>
+            <select
+              value={profile}
+              onChange={(e) => setProfile(e.target.value)} // Fix the profile selection
+              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+            >
+              <option value="">Select Profile</option>
+              {profileOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <br />
           <br />
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">

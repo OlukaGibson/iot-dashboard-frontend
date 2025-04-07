@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 
 const AddDeviceProfileForm = () => {
   const [name, setName] = useState('');
-  const [description, setReadkey] = useState('');
-  const [fields, setFields] = useState(Array(20).fill(''));
-  const [fieldMarks, setFieldMarks] = useState(Array(20).fill(false));
+  const [description, setDescription] = useState('');
+  const [fields, setFields] = useState(Array(15).fill(''));
+  const [configs, setConfigs] = useState(Array(10).fill(''));
   const [visibleFields, setVisibleFields] = useState(2);
+  const [visibleConfigs, setVisibleConfigs] = useState(2);
   const navigate = useNavigate();
 
   const handleFieldChange = (index, value) => {
@@ -17,15 +18,21 @@ const AddDeviceProfileForm = () => {
     setFields(newFields);
   };
 
-  const handleFieldMarkChange = (index, value) => {
-    const newFieldMarks = [...fieldMarks];
-    newFieldMarks[index] = value;
-    setFieldMarks(newFieldMarks);
+  const handleConfigChange = (index, value) => {
+    const newConfigs = [...configs];
+    newConfigs[index] = value;
+    setConfigs(newConfigs);
   };
 
   const handleAddField = () => {
-    if (visibleFields < 20) {
+    if (visibleFields < 15) {
       setVisibleFields(visibleFields + 1);
+    }
+  };
+
+  const handleAddConfig = () => {
+    if (visibleConfigs < 10) {
+      setVisibleConfigs(visibleConfigs + 1);
     }
   };
 
@@ -39,8 +46,8 @@ const AddDeviceProfileForm = () => {
       formData.append(`field${index + 1}`, field);
     });
 
-    fieldMarks.forEach((mark, index) => {
-      formData.append(`field${index + 1}_mark`, mark);
+    configs.forEach((config, index) => {
+      formData.append(`config${index + 1}`, config);
     });
 
     try {
@@ -78,7 +85,7 @@ const AddDeviceProfileForm = () => {
             <input
               type="text"
               value={description}
-              onChange={(e) => setReadkey(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
               className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
               required
             />
@@ -90,20 +97,31 @@ const AddDeviceProfileForm = () => {
                 type="text"
                 value={field}
                 onChange={(e) => handleFieldChange(index, e.target.value)}
-                className="mt-1 block w-1/2 p-2 text-lg rounded-lg"
-              />
-              <label className="block text-gray-700 w-1/4">{`Field ${index + 1} Mark`}</label>
-              <input
-                type="checkbox"
-                checked={fieldMarks[index]}
-                onChange={(e) => handleFieldMarkChange(index, e.target.checked)}
-                className="mt-1 block"
+                className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
               />
             </div>
           ))}
-          {visibleFields < 20 && (
+          {visibleFields < 15 && (
             <button type="button" onClick={handleAddField} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
               + Add Field
+            </button>
+          )}
+          {configs.slice(0, visibleConfigs).map((config, index) => (
+            <div className="mb-4 flex items-center" key={index}>
+              <>
+                <label className="block text-gray-700 w-1/4">{`Config ${index + 1}`}</label>
+                <input
+                  type="text"
+                  value={config}
+                  onChange={(e) => handleConfigChange(index, e.target.value)}
+                  className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+                />
+              </>
+            </div>
+          ))}
+          {visibleConfigs < 10 && (
+            <button type="button" onClick={handleAddConfig} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+              + Add Config
             </button>
           )}
           <br />

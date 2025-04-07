@@ -61,12 +61,13 @@ const DeviceProfileDetail = () => {
                     ))}
                   </div>
                   <div>
-                    <strong>Field Marks:</strong>
-                    {Object.entries(profile.field_marks).map(([key, value]) => (
-                      <div key={key}>{key}: {value ? "✔️" : "❌"}</div>
+                    <strong>Configs:</strong>
+                    {Object.entries(profile.configs).map(([key, value]) => (
+                      <div key={key}>{key}: {value}</div>
                     ))}
                   </div>
                 </div>
+                // <div key={key}>{key}: {value ? "✔️" : "❌"}</div>
               ) : (
                 <p>Profile not found</p>
               )}

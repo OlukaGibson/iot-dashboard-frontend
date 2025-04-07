@@ -8,10 +8,12 @@ const AddDeviceForm = () => {
   const [readkey, setReadkey] = useState('');
   const [writekey, setWritekey] = useState('');
   const [deviceID, setDeviceID] = useState('');
-  const [imsi, setImsi] = useState('');
-  const [imei, setImei] = useState('');
+  const [networkID, setNetworkID] = useState('');
   const [profile, setProfile] = useState('');
   const [currentFirmwareVersion, setCurrentFirmwareVersion] = useState('');
+  const [previousFirmwareVersion, setPreviousFirmwareVersion] = useState('');
+  const [targetFirmwareVersion, setTargetFirmwareVersion] = useState('');
+  const [fileDownloadState, setFileDownloadState] = useState(false);
   const [firmwareOptions, setFirmwareOptions] = useState([]);
   const [showFirmwareFields, setShowFirmwareFields] = useState(false);
   const [profileOptions, setProfileOptions] = useState([]);
@@ -47,10 +49,12 @@ const AddDeviceForm = () => {
     formData.append('readkey', readkey);
     formData.append('writekey', writekey);
     formData.append('deviceID', deviceID);
-    formData.append('imsi', imsi);
-    formData.append('imei', imei);
+    formData.append('networkID', networkID);
     formData.append('profile', profile);
     formData.append('currentFirmwareVersion', currentFirmwareVersion);
+    formData.append('previousFirmwareVersion', previousFirmwareVersion);
+    formData.append('targetFirmwareVersion', targetFirmwareVersion);
+    formData.append('fileDownloadState', fileDownloadState);
 
     try {
       const response = await axios.post(`${config.baseURL}/adddevice`, formData, {
@@ -113,21 +117,11 @@ const AddDeviceForm = () => {
             />
           </div>
           <div className="mb-4 flex items-center">
-            <label className="block text-gray-700 w-1/4">IMSI</label>
+            <label className="block text-gray-700 w-1/4">Network ID</label>
             <input
               type="text"
-              value={imsi}
-              onChange={(e) => setImsi(e.target.value)}
-              className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
-              required
-            />
-          </div>
-          <div className="mb-4 flex items-center">
-            <label className="block text-gray-700 w-1/4">IMEI</label>
-            <input
-              type="text"
-              value={imei}
-              onChange={(e) => setImei(e.target.value)}
+              value={networkID}
+              onChange={(e) => setNetworkID(e.target.value)}
               className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
               required
             />
@@ -154,13 +148,31 @@ const AddDeviceForm = () => {
                   ))}
                 </select>
               </div>
+              <div className="mb-4 flex items-center">
+                <label className="block text-gray-700 w-1/4">Previous Firmware Version</label>
+                <input
+                  type="text"
+                  value={previousFirmwareVersion}
+                  onChange={(e) => setPreviousFirmwareVersion(e.target.value)}
+                  className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+                />
+              </div>
+              <div className="mb-4 flex items-center">
+                <label className="block text-gray-700 w-1/4">Target Firmware Version</label>
+                <input
+                  type="text"
+                  value={targetFirmwareVersion}
+                  onChange={(e) => setTargetFirmwareVersion(e.target.value)}
+                  className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
+                />
+              </div>
             </>
           )}
           <div className="mb-4 flex items-center">
             <label className="block text-gray-700 w-1/4">Profile</label>
             <select
               value={profile}
-              onChange={(e) => setProfile(e.target.value)} // Fix the profile selection
+              onChange={(e) => setProfile(e.target.value)}
               className="mt-1 block w-3/4 p-2 text-lg rounded-lg"
             >
               <option value="">Select Profile</option>
@@ -170,6 +182,15 @@ const AddDeviceForm = () => {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="mb-4 flex items-center">
+            <label className="block text-gray-700 w-1/4">File Download State</label>
+            <input
+              type="checkbox"
+              checked={fileDownloadState}
+              onChange={(e) => setFileDownloadState(e.target.checked)}
+              className="mt-1"
+            />
           </div>
           <br />
           <br />

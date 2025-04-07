@@ -49,8 +49,7 @@ const DeviceProfileList = () => {
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Description</th>
               <th className="px-4 py-2">Created At</th>
-              <th className="px-4 py-2">Fields</th>
-              {/* <th className="px-4 py-2">Field Marks</th> */}
+              {/* <th className="px-4 py-2">Fields</th> */}
             </tr>
           </thead>
           <tbody>
@@ -59,16 +58,12 @@ const DeviceProfileList = () => {
                 <td className="border px-4 py-2">{profile.name}</td>
                 <td className="border px-4 py-2">{profile.description}</td>
                 <td className="border px-4 py-2">{new Date(profile.created_at).toLocaleString()}</td>
-                <td className="border px-4 py-2">
+                {/* <td className="border px-4 py-2">
                   {Object.values(profile.fields).filter(field => field).map((field, i) => (
                     <div key={i}>{field}</div>
                   ))}
                 </td>
-                {/* <td className="border px-4 py-2">
-                  {Object.values(profiles.field_marks).filter(mark => mark).map((mark, i) => (
-                    <div key={i}>{mark ? "✔️" : "❌"}</div>
-                  ))}
-                </td> */}
+                    <div key={i}>{mark ? "✔️" : "❌"}</div> */}
               </tr>
             ))}
           </tbody>

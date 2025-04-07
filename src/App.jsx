@@ -13,7 +13,6 @@ import AddDeviceProfile from './components/pages/AddDeviceProfile';
 import DeviceProfile from './components/pages/DeviceProfile';
 import DeviceProfileDetail from './components/DeviceProfileDetail';
 
-
 const App = () => {
   return (
     <Router>

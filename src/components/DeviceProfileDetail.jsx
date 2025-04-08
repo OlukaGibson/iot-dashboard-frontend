@@ -48,38 +48,72 @@ const DeviceProfileDetail = () => {
         </div>
         <br />
         <div className="flex flex-col bg-cover mt-20">
-            <div className="flex justify-center">
-              <div className="text-center items-center py-10 px-6 md:px-20 w-full md:w-11/12 bg-gray-100 rounded-3xl bg-opacity-75 text-gray-800">
-                <h1 className="text-2xl font-bold mb-4">Profile Details</h1>
-              {profile ? (
-                <>
-                  {/* Centered Name and Description */}
+          <div className="flex justify-center">
+            {profile ? (
+              <div className="text-center items-center py-10 px-6 md:px-20 w-full md:w-11/12 rounded-3xl bg-opacity-75 text-gray-800">
+                <div className="bg-gray-100 py-10 px-6 md:px-20 w-full md:w-11/12 rounded-3xl bg-opacity-75 ">
+                  <h1 className="text-2xl font-bold mb-4">Profile Details</h1>
                   <div className="text-center mb-6">
                     <p><strong>Name:</strong> {profile.name}</p>
                     <p><strong>Description:</strong> {profile.description}</p>
                   </div>
-                  {/* Fields and Configs in Two Columns */}
-                  <div className="flex flex-col md:flex-row justify-between w-full">
-                    {/* Fields on the Left */}
+            
+                  {/* Fields and Configs Section (Two Columns) */}
+                  <div className="flex flex-col md:flex-row justify-between w-full mb-10">
                     <div className="text-left md:w-1/2">
                       <strong>Fields:</strong>
                       {Object.entries(profile.fields).map(([key, value]) => (
                         <p key={key}>{key}: {value}</p>
                       ))}
                     </div>
-                    {/* Configs on the Right */}
-                    <div className="text-right w-full">
+                    <div className="text-right md:w-1/2">
                       <strong>Configs:</strong>
                       {Object.entries(profile.configs).map(([key, value]) => (
                         <p key={key}>{key}: {value}</p>
                       ))}
                     </div>
                   </div>
-                </>
-              ) : (
-                <p>Profile not found</p>
-              )}
-            </div>
+                </div>  
+                {/* Devices Table Section */}
+                <div className="py-5 px-6 md:px-20 w-full md:w-11/12 rounded-3xl bg-opacity-75 ">
+                  <div className="mt-10">
+                    <h2 className="text-xl font-bold mb-4">Devices</h2>
+                    <div className="overflow-x-auto">
+                      <table className="table-auto w-full border-collapse border border-gray-300">
+                        <thead>
+                          <tr className="bg-gray-200">
+                            <th className="border border-gray-300 px-4 py-2">Device Name</th>
+                            <th className="border border-gray-300 px-4 py-2">Device ID</th>
+                            {Object.entries(profile.configs)
+                              .filter(([key, value]) => value)
+                              .map(([key, value]) => (
+                                <th key={key} className="border border-gray-300 px-4 py-2">{value}</th>
+                              ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {profile.devices.map((device) => (
+                            <tr key={device.deviceID} className="text-center">
+                              <td className="border border-gray-300 px-4 py-2">{device.name}</td>
+                              <td className="border border-gray-300 px-4 py-2">{device.deviceID}</td>
+                              {Object.entries(profile.configs)
+                                .filter(([key, value]) => value)
+                                .map(([key]) => (
+                                  <td key={key} className="border border-gray-300 px-4 py-2">
+                                    {device.recent_config[key] || 'N/A'}
+                                  </td>
+                                ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>      
+                </div>
+              </div>
+            ) : (
+              <p>Profile not found</p>
+            )}
           </div>
         </div>
       </div>

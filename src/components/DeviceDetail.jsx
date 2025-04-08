@@ -16,6 +16,7 @@ const DeviceDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [showMetadata, setShowMetadata] = useState(true);
   const baseURL = config.baseURL;
+  const [formData, setFormData] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -190,7 +191,7 @@ const DeviceDetail = () => {
                 className="bg-blue-500 text-white px-4 py-2 rounded"
                 onClick={() => setShowMetadata(!showMetadata)}
               >
-                {showMetadata ? 'Metadata' : 'Config Data'}
+                {showMetadata ? 'Device data' : 'Config Data'}
               </button>
             </div>
             <div className="flex flex-wrap justify-center mt-10">
@@ -206,42 +207,45 @@ const DeviceDetail = () => {
       <Footer />
       {/* Modal for Adding Config Data */}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Add Config Data</h2>
-            <form onSubmit={handleSubmit}>
-              {[...Array(10)].map((_, i) => (
-                <div key={i} className="mb-4">
-                  <label className="block text-gray-700">
-                    Config {i + 1}:
-                    <input
-                      type="text"
-                      name={`config${i + 1}`}
-                      onChange={handleInputChange}
-                      className="w-full mt-1 p-2 border rounded"
-                    />
-                  </label>
-                </div>
-              ))}
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+  <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 className="text-xl font-bold mb-4">Add Config Data</h2>
+      <form onSubmit={handleSubmit}>
+        {Object.entries(device.profile.configs)
+          .filter(([key, value]) => value) // Only include configs that exist
+          .map(([key, value]) => (
+            <div key={key} className="mb-4">
+              <label className="block text-gray-700 font-bold mb-1">
+                {value} {/* Display the actual config label from the profile */}
+              </label>
+              <input
+                type="text"
+                name={key}
+                placeholder={`${key}`} // Placeholder with the config name
+                onChange={handleInputChange}
+                className="w-full mt-1 p-2 border rounded"
+              />
+            </div>
+          ))}
+        <div className="flex justify-end">
+          <button
+            type="button"
+            className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+            onClick={() => setShowModal(false)}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Submit
+          </button>
         </div>
-      )}
+      </form>
+    </div>
+  </div>
+)}
     </div>
   );
 };

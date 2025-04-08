@@ -46,37 +46,44 @@ const DeviceProfileDetail = () => {
         <div className="fixed top-0 left-0 w-full z-50">
           <Navbar />
         </div>
-        <div className="h-screen flex flex-col bg-cover">
-          <div className="flex-grow flex justify-center items-center mt-20">
-            <div className="flex flex-col text-center items-center py-10 px-6 md:px-20 w-11/12 md:w-1/2 bg-blue-600 rounded-3xl bg-opacity-75 text-white">
-              <h1 className="text-2xl font-bold mb-4">Profile Details</h1>
+        <br />
+        <div className="flex flex-col bg-cover mt-20">
+            <div className="flex justify-center">
+              <div className="text-center items-center py-10 px-6 md:px-20 w-full md:w-11/12 bg-gray-100 rounded-3xl bg-opacity-75 text-gray-800">
+                <h1 className="text-2xl font-bold mb-4">Profile Details</h1>
               {profile ? (
-                <div>
-                  <p><strong>Name:</strong> {profile.name}</p>
-                  <p><strong>Description:</strong> {profile.description}</p>
-                  <div>
-                    <strong>Fields:</strong>
-                    {Object.entries(profile.fields).map(([key, value]) => (
-                      <div key={key}>{key}: {value}</div>
-                    ))}
+                <>
+                  {/* Centered Name and Description */}
+                  <div className="text-center mb-6">
+                    <p><strong>Name:</strong> {profile.name}</p>
+                    <p><strong>Description:</strong> {profile.description}</p>
                   </div>
-                  <div>
-                    <strong>Configs:</strong>
-                    {Object.entries(profile.configs).map(([key, value]) => (
-                      <div key={key}>{key}: {value}</div>
-                    ))}
+                  {/* Fields and Configs in Two Columns */}
+                  <div className="flex flex-col md:flex-row justify-between w-full">
+                    {/* Fields on the Left */}
+                    <div className="text-left md:w-1/2">
+                      <strong>Fields:</strong>
+                      {Object.entries(profile.fields).map(([key, value]) => (
+                        <p key={key}>{key}: {value}</p>
+                      ))}
+                    </div>
+                    {/* Configs on the Right */}
+                    <div className="text-right w-full">
+                      <strong>Configs:</strong>
+                      {Object.entries(profile.configs).map(([key, value]) => (
+                        <p key={key}>{key}: {value}</p>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                // <div key={key}>{key}: {value ? "✔️" : "❌"}</div>
+                </>
               ) : (
                 <p>Profile not found</p>
               )}
-              <br />
             </div>
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

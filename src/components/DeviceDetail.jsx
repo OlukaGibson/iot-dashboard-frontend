@@ -13,7 +13,7 @@ const DeviceDetail = () => {
   const [device, setDevice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showMarkedFields, setShowMarkedFields] = useState(true);
+  const [showMetadata, setShowMetadata] = useState(true); // State to toggle between metadata and config data
   const baseURL = config.baseURL;
 
   useEffect(() => {
@@ -45,13 +45,13 @@ const DeviceDetail = () => {
     return <p>Error: {error}</p>;
   }
 
-  const renderGraph = (field, label) => {
-    const data = {
-      labels: device.device_data.map(entry => new Date(entry.created_at).toLocaleTimeString()),
+  const renderGraph = (data, field, label) => {
+    const chartData = {
+      labels: data.map(entry => new Date(entry.created_at).toLocaleTimeString()),
       datasets: [
         {
           label: label,
-          data: device.device_data.map(entry => entry[field]),
+          data: data.map(entry => entry[field]),
           fill: false,
           backgroundColor: 'rgba(75,192,192,0.4)',
           borderColor: 'rgba(75,192,192,1)',
@@ -63,16 +63,14 @@ const DeviceDetail = () => {
       <div className="w-full md:w-1/2 p-4">
         <h2 className="text-lg font-bold mb-2">{label}</h2>
         <div className="bg-white p-4 rounded-lg shadow-lg">
-          <Line data={data} options={{ maintainAspectRatio: false }} width={600} height={300} />
+          <Line data={chartData} options={{ maintainAspectRatio: false }} width={600} height={300} />
         </div>
       </div>
     );
   };
 
-  const filteredFields = Object.entries(device.profile.fields).filter(([key]) => {
-    const markKey = `${key}_mark`;
-    return showMarkedFields ? device.profile.field_marks[markKey] : !device.profile.field_marks[markKey];
-  });
+  const fields = Object.entries(device.profile.fields);
+  const configs = Object.entries(device.profile.configs);
 
   return (
     <div>
@@ -97,6 +95,7 @@ const DeviceDetail = () => {
                   <div className="text-right">
                     <p><strong>Current Firmware Version:</strong> {device.currentFirmwareVersion}</p>
                     <p><strong>Previous Firmware Version:</strong> {device.previousFirmwareVersion}</p>
+                    <p><strong>Target Firmware Version:</strong> {device.targetFirmwareVersion}</p>
                     <p><strong>File Download State:</strong> {device.fileDownloadState ? "True" : "False"}</p>
                     <div>
                       <strong>Profile:</strong>
@@ -109,13 +108,15 @@ const DeviceDetail = () => {
             <div className="flex justify-center mt-10">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={() => setShowMarkedFields(!showMarkedFields)}
+                onClick={() => setShowMetadata(!showMetadata)}
               >
-                {showMarkedFields ? 'Show Unmarked Fields' : 'Show Marked Fields'}
+                {showMetadata ? 'Show Config Data' : 'Show Metadata'}
               </button>
             </div>
             <div className="flex flex-wrap justify-center mt-10">
-              {filteredFields.map(([key, value]) => renderGraph(key, value))}
+              {showMetadata
+                ? fields.map(([key, value]) => renderGraph(device.device_data, key, value))
+                : configs.map(([key, value]) => renderGraph(device.config_data, key, value))}
             </div>
           </div>
         ) : (

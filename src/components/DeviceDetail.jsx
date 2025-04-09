@@ -53,38 +53,38 @@ const DeviceDetail = () => {
       });
   };
 
-  const handleUpdateConfigs = () => {
-    if (!device) return;
+  // const handleUpdateConfigs = () => {
+  //   if (!device) return;
   
-    const formData = new FormData();
-    formData.append('deviceID', device.deviceID);
+  //   const formData = new FormData();
+  //   formData.append('deviceID', device.deviceID);
   
-    // Append up to 10 configs (config1 to config10)
-    for (let i = 1; i <= 10; i++) {
-      const key = `config${i}`;
-      const value = device.profile.configs[key] || '';
-      formData.append(key, value);
-    }
+  //   // Append up to 10 configs (config1 to config10)
+  //   for (let i = 1; i <= 10; i++) {
+  //     const key = `config${i}`;
+  //     const value = device.profile.configs[key] || '';
+  //     formData.append(key, value);
+  //   }
   
-    fetch(`${baseURL}/update_config_data`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to update config data');
-        }
-        return response.json();
-      })
-      .then(data => {
-        alert('Configuration update successful!');
-        console.log('Response:', data);
-      })
-      .catch(error => {
-        alert(`Error: ${error.message}`);
-        console.error('Error updating config:', error);
-      });
-  };
+  //   fetch(`${baseURL}/update_config_data`, {
+  //     method: 'POST',
+  //     body: formData,
+  //   })
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error('Failed to update config data');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       alert('Configuration update successful!');
+  //       console.log('Response:', data);
+  //     })
+  //     .catch(error => {
+  //       alert(`Error: ${error.message}`);
+  //       console.error('Error updating config:', error);
+  //     });
+  // };
 
   useEffect(() => {
     console.log(`Fetching device details from: ${baseURL}/get_device/${deviceID}`);
@@ -194,17 +194,41 @@ const DeviceDetail = () => {
                 {showMetadata ? 'Device data' : 'Config Data'}
               </button>
             </div>
-            <div className="flex flex-wrap justify-center mt-10">
-              {showMetadata
-                ? fields.map(([key, value]) => renderGraph(device.device_data, key, value))
-                : configs.map(([key, value]) => renderGraph(device.config_data, key, value))}
-            </div>
+            <div className="flex flex-wrap justify-center mt-10 w-full px-4">
+  {showMetadata ? (
+    fields.map(([key, value]) => renderGraph(device.device_data, key, value))
+  ) : (
+    <div className="overflow-x-auto w-full">
+      <table className="min-w-full bg-white shadow-md rounded-lg">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 border">Timestamp</th>
+            {configs.map(([key, label]) => (
+              <th key={key} className="px-4 py-2 border">{label}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {device.config_data.map((entry, index) => (
+            <tr key={index} className="hover:bg-gray-100">
+              <td className="px-4 py-2 border">{new Date(entry.created_at).toLocaleString()}</td>
+              {configs.map(([key]) => (
+                <td key={key} className="px-4 py-2 border">{entry[key]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
+
           </div>
         ) : (
           <p>Device not found</p>
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
       {/* Modal for Adding Config Data */}
       {showModal && (
   <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
